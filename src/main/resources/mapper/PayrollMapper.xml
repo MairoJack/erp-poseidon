@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.poseidon.erp.dao.PayrollDao">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.poseidon.erp.bean.entity.Payroll">
+        <result column="id" property="id" />
+        <result column="version" property="version" />
+        <result column="operator" property="operator" />
+        <result column="create_time" property="createTime" />
+        <result column="realname" property="realname" />
+        <result column="mobile" property="mobile" />
+        <result column="date" property="date" />
+        <result column="basic_salary" property="basicSalary" />
+        <result column="overtime_salary" property="overtimeSalary" />
+        <result column="subsidy" property="subsidy" />
+        <result column="attendance" property="attendance" />
+        <result column="other" property="other" />
+        <result column="total" property="total" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        version,
+        operator,
+        create_time,
+        realname, mobile, date, basic_salary, overtime_salary, subsidy, attendance, other, total, remark
+    </sql>
+
+</mapper>

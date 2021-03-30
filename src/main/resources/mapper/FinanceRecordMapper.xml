@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.poseidon.erp.dao.FinanceRecordDao">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.poseidon.erp.bean.entity.FinanceRecord">
+        <result column="id" property="id" />
+        <result column="relation_id" property="relationId" />
+        <result column="version" property="version" />
+        <result column="operator" property="operator" />
+        <result column="create_time" property="createTime" />
+        <result column="name" property="name" />
+        <result column="type" property="type" />
+        <result column="amount" property="amount" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        relation_id,
+        version,
+        operator,
+        create_time,
+        name, type, amount, remark
+    </sql>
+
+    <sql id="COMMON_DATE_RANGE">
+        DATE_FORMAT(create_time, '%Y-%m') between DATE_FORMAT(#{startDate}, '%Y-%m') and DATE_FORMAT(#{endDate}, '%Y-%m')
+    </sql>
+    <select id="selectStatistics" resultType="com.poseidon.erp.bean.vo.FinanceStatisticsVO">
+        select
+            ifnull(sum(case when type = 'SALES' then amount else 0 end),0) sales,
+            ifnull(sum(case when type = 'SALARY' then amount else 0 end),0) salary,
+            ifnull(sum(case when type = 'PURCHASE' then amount else 0 end),0) purchase,
+            ifnull(sum(case when type = 'OPERATING' then amount else 0 end),0) operating,
+            ifnull(sum(case when type = 'OTHER' then amount else 0 end),0) other
+        from erp_finance_record
+        where <include refid="COMMON_DATE_RANGE"/>
+    </select>
+
+    <select id="selectStatisticsChat" resultType="com.poseidon.erp.bean.vo.FinanceChatItemVO">
+        select DATE_FORMAT(create_time, '%Y-%m') month ,type, sum(amount) amount
+        from erp_finance_record
+        where <include refid="COMMON_DATE_RANGE"/>
+        group by type,month
+        order by month
+    </select>
+
+    <select id="statisticsAmount" resultType="BigDecimal">
+        select ifnull(sum(amount),0)
+        from erp_finance_record
+        ${ew.customSqlSegment}
+    </select>
+</mapper>

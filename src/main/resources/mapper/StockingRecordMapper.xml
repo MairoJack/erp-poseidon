@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.poseidon.erp.dao.StockingRecordDao">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.poseidon.erp.bean.entity.StockingRecord">
+        <result column="id" property="id" />
+        <result column="version" property="version" />
+        <result column="operator" property="operator" />
+        <result column="create_time" property="createTime" />
+        <result column="stocking_plan_id" property="stockingPlanId" />
+        <result column="quantity" property="quantity" />
+        <result column="finish_person" property="finishPerson" />
+        <result column="finish_person_id" property="finishPersonId" />
+        <result column="finish_time" property="finishTime" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        version,
+        operator,
+        create_time,
+        stocking_plan_id, quantity, finish_person, finish_person_id, finish_time, remark
+    </sql>
+
+    <sql id="Select_Stocking_Plan">
+        sp.product_name,
+        sp.product_code,
+        sp.code,
+        sp.product_specs
+    </sql>
+
+    <select id="selectStockingRecordPage" resultType="com.poseidon.erp.bean.vo.StockingRecordVO">
+        select <include refid="Select_Stocking_Plan"/>,
+        sr.* from erp_stocking_record sr
+        left join erp_stocking_plan sp on sr.stocking_plan_id = sp.id
+        ${ew.customSqlSegment}
+    </select>
+
+    <select id="selectStockingRecordList" resultType="com.poseidon.erp.bean.vo.StockingRecordVO">
+        select <include refid="Select_Stocking_Plan"/>,
+        sr.* from erp_stocking_record sr
+        left join erp_stocking_plan sp on sr.stocking_plan_id = sp.id
+        ${ew.customSqlSegment}
+    </select>
+
+    <select id="selectTotalQuantity" resultType="Integer">
+        select ifnull(sum(quantity),0)
+        from erp_stocking_record
+        where stocking_plan_id = #{stockingPlanId};
+    </select>
+</mapper>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.poseidon.erp.dao.PurchaseOrderDao">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.poseidon.erp.bean.entity.PurchaseOrder">
+        <result column="id" property="id" />
+        <result column="version" property="version" />
+        <result column="operator" property="operator" />
+        <result column="create_time" property="createTime" />
+        <result column="name" property="name" />
+        <result column="code" property="code" />
+        <result column="specs" property="specs" />
+        <result column="supplier" property="supplier" />
+        <result column="mobile" property="mobile" />
+        <result column="channel_address" property="channelAddress" />
+        <result column="quantity" property="quantity" />
+        <result column="unit_price" property="unitPrice" />
+        <result column="total_price" property="totalPrice" />
+        <result column="remark" property="remark" />
+        <result column="image" property="image" />
+        <result column="is_accessory" property="accessory" />
+        <result column="stock_time" property="stockTime" />
+        <result column="stock_quantity" property="stockQuantity" />
+        <result column="purchase_time" property="purchaseTime" />
+        <result column="order_no" property="orderNo" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        version,
+        operator,
+        create_time,
+        image,
+        order_no,stock_time,purchase_time,stock_quantity,is_accessory,
+        name, code, specs, supplier, mobile, channel_address, quantity, unit_price, total_price, remark
+    </sql>
+
+</mapper>

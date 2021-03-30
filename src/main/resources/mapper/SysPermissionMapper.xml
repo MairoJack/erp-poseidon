@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.poseidon.erp.dao.SysPermissionDao">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.poseidon.erp.bean.entity.SysPermission">
+        <result column="id" property="id"/>
+        <result column="create_time" property="createTime"/>
+        <result column="parent_id" property="parentId"/>
+        <result column="code" property="code"/>
+        <result column="name" property="name"/>
+        <result column="type" property="type"/>
+        <result column="description" property="description"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        create_time,
+        update_time,
+        parent_id, code, `name`, `type`, desciption
+    </sql>
+
+    <select id="selectByRoleId" resultType="Long">
+        SELECT DISTINCT p.id
+        FROM erp_sys_permission AS p
+        LEFT JOIN erp_sys_role_permission AS rp ON p.id = rp.permission_id
+        WHERE rp.role_id = #{roleId}
+        AND p.type = 'BUTTON'
+    </select>
+
+    <!-- 根据用户ID查找权限列表 -->
+    <select id="selectByUserId" resultType="String">
+        SELECT DISTINCT p.code
+        FROM erp_sys_permission as p
+        LEFT JOIN erp_sys_role_permission AS rp ON p.id = rp.permission_id
+        LEFT JOIN erp_sys_user_role AS ur ON ur.role_id = rp.role_id
+        WHERE ur.user_id = #{userId}
+    </select>
+
+</mapper>

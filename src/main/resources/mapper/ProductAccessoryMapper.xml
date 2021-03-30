@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.poseidon.erp.dao.ProductAccessoryDao">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.poseidon.erp.bean.entity.ProductAccessory">
+        <result column="id" property="id" />
+        <result column="version" property="version" />
+        <result column="operator" property="operator" />
+        <result column="create_time" property="createTime" />
+        <result column="product_id" property="productId" />
+        <result column="purchase_id" property="purchaseId" />
+        <result column="purchase_name" property="purchaseName" />
+        <result column="purchase_code" property="purchaseCode" />
+        <result column="purchase_image" property="purchaseImage" />
+        <result column="purchase_specs" property="purchaseSpecs" />
+        <result column="quantity" property="quantity" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        version,
+        operator,
+        create_time,
+        product_id, purchase_id, purchase_name, purchase_code, purchase_image, purchase_specs, quantity
+    </sql>
+
+    <select id="listWithInventory" resultType="com.poseidon.erp.bean.vo.ProductAccessoryVO">
+        select epa.*,ifnull(eai.inventory,0) inventory
+        from erp_product_accessory epa
+        left join erp_accessory_inventory eai on epa.purchase_id = eai.purchase_id
+        where epa.product_id = #{productId}
+    </select>
+</mapper>

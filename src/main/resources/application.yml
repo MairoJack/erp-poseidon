@@ -1,0 +1,18 @@
+server:
+  port: 5177
+spring:
+  application:
+    name: erp
+  profiles:
+    active: dev
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 50MB
+  main:
+      allow-bean-definition-overriding: true
+mybatis-plus:
+  type-handlers-package: com.poseidon.erp.component
+  mapper-locations: classpath:mapper/*.xml

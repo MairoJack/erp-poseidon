@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.poseidon.erp.dao.AccessoryInventoryDao">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.poseidon.erp.bean.entity.AccessoryInventory">
+        <result column="id" property="id" />
+        <result column="version" property="version" />
+        <result column="operator" property="operator" />
+        <result column="create_time" property="createTime" />
+        <result column="purchase_id" property="purchaseId" />
+        <result column="purchase_code" property="purchaseCode" />
+        <result column="purchase_image" property="purchaseImage" />
+        <result column="purchase_name" property="purchaseName" />
+        <result column="purchase_supplier" property="purchaseSupplier" />
+        <result column="use_quantity" property="useQuantity" />
+        <result column="inventory" property="inventory" />
+        <result column="history_inventory" property="historyInventory" />
+        <result column="stock_time" property="stockTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        version,
+        operator,
+        create_time,purchase_image,
+        purchase_id, purchase_code, purchase_name, purchase_supplier, use_quantity, inventory, history_inventory, stock_time
+    </sql>
+
+</mapper>

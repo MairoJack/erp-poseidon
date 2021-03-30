@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://124.71.174.182:3306/erp_poseidon?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=Asia/Shanghai
+    username: root
+    password: Poseidon_2020
+    hikari:
+      max-lifetime: 120000
+  redis:
+    host: 124.71.174.182
+    port: 6379
+    database: 1
+    timeout: 5000
+    #password: cd7788
+
+file:
+  path: /Users/mario/Documents/erp/images/
+  thumbnailPath: /Users/mario/Documents/erp/images/thumbnail/
+
+logging:
+  level:
+    root: info

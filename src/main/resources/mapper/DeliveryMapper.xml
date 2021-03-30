@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.poseidon.erp.dao.DeliveryDao">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.poseidon.erp.bean.entity.Delivery">
+        <result column="id" property="id"/>
+        <result column="version" property="version"/>
+        <result column="operator" property="operator"/>
+        <result column="create_time" property="createTime"/>
+        <result column="name" property="name"/>
+        <result column="amazon" property="amazon"/>
+        <result column="delivery_forwarder" property="deliveryForwarder"/>
+        <result column="delivery_method" property="deliveryMethod"/>
+        <result column="tracking_number" property="trackingNumber"/>
+        <result column="freight" property="freight"/>
+        <result column="delivery_time" property="deliveryTime"/>
+        <result column="arrival_time" property="arrivalTime"/>
+        <result column="is_arrival" property="arrival"/>
+        <result column="remark" property="remark"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        version,
+        operator,
+        create_time,is_arrival,delivery_forwarder,amazon,
+        name, delivery_method, tracking_number, freight, delivery_time, arrival_time, remark
+    </sql>
+
+</mapper>
