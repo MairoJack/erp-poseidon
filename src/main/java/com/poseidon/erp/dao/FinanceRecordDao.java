@@ -19,9 +19,9 @@ import java.util.List;
  */
 public interface FinanceRecordDao extends BaseMapper<FinanceRecord> {
 
-    FinanceStatisticsVO selectStatistics(LocalDate startDate, LocalDate endDate);
+    FinanceStatisticsVO selectStatistics(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
 
-    List<FinanceChatItemVO> selectStatisticsChat(LocalDate startDate, LocalDate endDate);
+    List<FinanceChatItemVO> selectStatisticsChat(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
 
     BigDecimal statisticsAmount(@Param(Constants.WRAPPER) Wrapper<FinanceRecord> wrapper);
 }

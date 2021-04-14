@@ -83,8 +83,8 @@ public class PurchaseOrderService extends BaseService<PurchaseOrderDao, Purchase
                 .setStockQuantity(form.getStockQuantity())
                 .setOperator(SecurityHolder.getUsername());
         super.updateById(purchaseOrder);
-        accessoryInventoryService.stock(purchaseOrder);
-        accessoryUseRecordService.create(purchaseOrder.getPurchaseId(), StockStatus.IN_STOCK, form.getStockQuantity());
+        Integer inventory = accessoryInventoryService.stock(purchaseOrder);
+        accessoryUseRecordService.create(purchaseOrder.getPurchaseId(), StockStatus.IN_STOCK, form.getStockQuantity(), inventory);
     }
 
     @Override

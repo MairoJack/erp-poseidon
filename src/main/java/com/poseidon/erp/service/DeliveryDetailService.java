@@ -51,7 +51,7 @@ public class DeliveryDetailService extends BaseService<DeliveryDetailDao, Delive
                     .setProductSpecs(productInventory.getProductSpecs())
                     .setQuantity(quantity);
             super.save(detail);
-            productInventoryRecordService.create(productId, StockStatus.OUT_STOCK, quantity);
+            productInventoryRecordService.create(productId, StockStatus.OUT_STOCK, quantity, productInventory.getInventory());
         }
     }
 

@@ -22,10 +22,11 @@ public class ProductInventoryRecordService extends BaseService<ProductInventoryR
         super(ProductInventoryRecord.class, ResponseCode.PRODUCT_INVENTORY_RECORD_NOT_FOUND);
     }
 
-    public void create(Long productId, StockStatus status, Integer quantity) {
+    public void create(Long productId, StockStatus status, Integer quantity,Integer surplusQuantity) {
         ProductInventoryRecord record = new ProductInventoryRecord();
         record.setProductId(productId)
                 .setQuantity(quantity)
+                .setSurplusQuantity(surplusQuantity)
                 .setStatus(status);
         super.save(record);
     }

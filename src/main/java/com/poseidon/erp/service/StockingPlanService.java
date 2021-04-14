@@ -94,11 +94,11 @@ public class StockingPlanService extends BaseService<StockingPlanDao, StockingPl
                 .setModifyTime(LocalDateTime.now());
         super.updateById(stockingPlan);
         //入仓库
-        productInventoryService.stock(stockingPlan, stockQuantity);
+        Integer inventory = productInventoryService.stock(stockingPlan, stockQuantity);
         //添加入库记录
-        productInventoryRecordService.create(stockingPlan.getProductId(), StockStatus.IN_STOCK, stockQuantity);
+        productInventoryRecordService.create(stockingPlan.getProductId(), StockStatus.IN_STOCK, stockQuantity, inventory);
         //配件出库
-        accessoryInventoryService.outStock(stockingPlan.getProductId(),stockQuantity);
+        accessoryInventoryService.outStock(stockingPlan.getProductId(), stockQuantity);
     }
 
     public BigDecimal statisticsStockQuantity(StockingPlanSearch search) {

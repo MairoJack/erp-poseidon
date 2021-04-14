@@ -36,8 +36,10 @@ public class AccessoryInventoryService extends BaseService<AccessoryInventoryDao
     /**
      * 入库
      */
-    public void stock(PurchaseOrder purchaseOrder) {
+    public Integer stock(PurchaseOrder purchaseOrder) {
         Integer stockQuantity = purchaseOrder.getStockQuantity();
+        //库存数量
+        Integer inventory = stockQuantity;
         AccessoryInventory accessoryInventory = super.getOne(Wrappers.<AccessoryInventory>lambdaQuery().eq(AccessoryInventory::getPurchaseId, purchaseOrder.getPurchaseId()));
         if (null == accessoryInventory) {
             accessoryInventory = new AccessoryInventory();
@@ -51,11 +53,13 @@ public class AccessoryInventoryService extends BaseService<AccessoryInventoryDao
                     .setInventory(stockQuantity)
                     .setHistoryInventory(stockQuantity);
         } else {
-            accessoryInventory.setInventory(accessoryInventory.getInventory() + stockQuantity);
+            inventory = accessoryInventory.getInventory() + stockQuantity;
+            accessoryInventory.setInventory(inventory);
             accessoryInventory.setHistoryInventory(accessoryInventory.getHistoryInventory() + stockQuantity);
         }
         accessoryInventory.setStockTime(purchaseOrder.getStockTime());
         super.saveOrUpdate(accessoryInventory);
+        return inventory;
     }
 
     /**
@@ -66,11 +70,12 @@ public class AccessoryInventoryService extends BaseService<AccessoryInventoryDao
             AccessoryInventory accessoryInventory = super.getOne(Wrappers.<AccessoryInventory>lambdaQuery().eq(AccessoryInventory::getPurchaseId, productAccessory.getPurchaseId()));
             if (accessoryInventory != null) {
                 int total = quantity * productAccessory.getQuantity();
-                accessoryInventory.setInventory(accessoryInventory.getInventory() - total);
+                int inventory = accessoryInventory.getInventory() - total;
+                accessoryInventory.setInventory(inventory);
                 if (!super.updateById(accessoryInventory)) {
                     throw new BusinessException(ResponseCode.REPEAT_SUBMIT);
                 }
-                accessoryUseRecordService.create(productAccessory.getPurchaseId(), StockStatus.OUT_STOCK, total);
+                accessoryUseRecordService.create(productAccessory.getPurchaseId(), StockStatus.OUT_STOCK, total, inventory);
             }
         }
     }
@@ -83,5 +88,10 @@ public class AccessoryInventoryService extends BaseService<AccessoryInventoryDao
         if (accessoryInventory != null && accessoryInventory.getInventory() > 0) {
             throw new BusinessException(ResponseCode.PURCHASE_ACCESSORY_HAS_STOCK);
         }
+    }
+
+    @Override
+    protected void afterModify(AccessoryInventory accessoryInventory, AccessoryInventoryDTO dto) {
+        accessoryUseRecordService.create(accessoryInventory.getPurchaseId(), StockStatus.STOCKTAKING, dto.getInventory(), dto.getInventory());
     }
 }

@@ -30,6 +30,10 @@ public class AccessoryUseRecord extends BaseEntity {
     private Integer quantity;
 
     /**
+     * 当前余量
+     */
+    private Integer surplusQuantity;
+    /**
      * 执行状态(在库、出库)
      */
     private StockStatus status;

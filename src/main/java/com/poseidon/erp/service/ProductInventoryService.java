@@ -4,10 +4,12 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.poseidon.erp.bean.dto.ProductInventoryDTO;
 import com.poseidon.erp.bean.entity.ProductInventory;
 import com.poseidon.erp.bean.entity.StockingPlan;
+import com.poseidon.erp.bean.enums.StockStatus;
 import com.poseidon.erp.common.BaseService;
 import com.poseidon.erp.dao.ProductInventoryDao;
 import com.poseidon.erp.exception.BusinessException;
 import com.poseidon.erp.utils.ResponseCode;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +23,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class ProductInventoryService extends BaseService<ProductInventoryDao, ProductInventory, ProductInventoryDTO> {
 
+    @Autowired
+    private ProductInventoryRecordService productInventoryRecordService;
+
     public ProductInventoryService() {
         super(ProductInventory.class, ResponseCode.PRODUCT_INVENTORY_NOT_FOUND);
     }
@@ -28,8 +33,9 @@ public class ProductInventoryService extends BaseService<ProductInventoryDao, Pr
     /**
      * 入库(更新库存)
      */
-    public void stock(StockingPlan plan, Integer stockQuantity) {
+    public Integer stock(StockingPlan plan, Integer stockQuantity) {
         ProductInventory productInventory = super.getOne(Wrappers.<ProductInventory>lambdaQuery().eq(ProductInventory::getProductId, plan.getProductId()));
+        Integer inventory = stockQuantity;
         if (null == productInventory) {
             productInventory = new ProductInventory();
             productInventory.setProductId(plan.getProductId())
@@ -41,11 +47,13 @@ public class ProductInventoryService extends BaseService<ProductInventoryDao, Pr
                     .setInventory(plan.getStockQuantity())
                     .setHistoryInventory(plan.getStockQuantity());
         } else {
-            productInventory.setInventory(productInventory.getInventory() + stockQuantity);
+            inventory = productInventory.getInventory() + stockQuantity;
+            productInventory.setInventory(inventory);
             productInventory.setHistoryInventory(productInventory.getHistoryInventory() + stockQuantity);
         }
         productInventory.setStockTime(plan.getStockTime());
         super.saveOrUpdate(productInventory);
+        return inventory;
     }
 
     /**
@@ -75,5 +83,12 @@ public class ProductInventoryService extends BaseService<ProductInventoryDao, Pr
         if (productInventory != null && productInventory.getInventory() > 0) {
             throw new BusinessException(ResponseCode.PRODUCT_HAS_STOCK);
         }
+    }
+
+    @Override
+    protected void afterModify(ProductInventory productInventory, ProductInventoryDTO dto) {
+        //盘库
+        productInventoryRecordService.create(productInventory.getProductId(), StockStatus.STOCKTAKING, dto
+                .getInventory(), dto.getInventory());
     }
 }

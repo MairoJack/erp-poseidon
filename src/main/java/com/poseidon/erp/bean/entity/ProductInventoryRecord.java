@@ -30,6 +30,11 @@ public class ProductInventoryRecord extends BaseEntity {
     private Integer quantity;
 
     /**
+     * 当前余量
+     */
+    private Integer surplusQuantity;
+    
+    /**
      * 状态(入库、出库)
      */
     private StockStatus status;

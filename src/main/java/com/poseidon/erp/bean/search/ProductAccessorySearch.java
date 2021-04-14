@@ -10,7 +10,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 产品 搜索
+ * 产品配件 搜索
  *
  * @author mario on 2021-01-18
  */
@@ -25,7 +25,7 @@ public class ProductAccessorySearch implements BaseSearch<ProductAccessory> {
     public Wrapper<ProductAccessory> query() {
         return Wrappers
                 .<ProductAccessory>lambdaQuery()
-                .like(ObjectUtil.isNotNull(productId), ProductAccessory::getProductId, productId)
+                .eq(ObjectUtil.isNotNull(productId), ProductAccessory::getProductId, productId)
                 ;
     }
 }

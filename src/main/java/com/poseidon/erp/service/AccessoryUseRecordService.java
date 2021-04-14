@@ -22,11 +22,12 @@ public class AccessoryUseRecordService extends BaseService<AccessoryUseRecordDao
         super(AccessoryUseRecord.class, ResponseCode.ACCESSORY_USE_RECORD_NOT_FOUND);
     }
 
-    public void create(Long purchaseId, StockStatus stockStatus, Integer quantity) {
+    public void create(Long purchaseId, StockStatus stockStatus, Integer quantity, Integer surplusQuantity) {
         AccessoryUseRecord record = new AccessoryUseRecord();
         record.setPurchaseId(purchaseId)
                 .setStatus(stockStatus)
-                .setQuantity(quantity);
+                .setQuantity(quantity)
+                .setSurplusQuantity(surplusQuantity);
         super.save(record);
     }
 }

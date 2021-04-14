@@ -17,5 +17,9 @@ public enum StockStatus {
     /**
      * 出库
      */
-    OUT_STOCK
+    OUT_STOCK,
+    /**
+     * 盘库
+     */
+    STOCKTAKING
 }
